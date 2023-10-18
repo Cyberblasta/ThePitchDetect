@@ -1,0 +1,28 @@
+
+#### CONFIG
+
+model_path : '/mnt/3660917E7771EA5C/Programming/ThePitchDetect/pitchdetector/models/pitch_detector.onnx'
+notes_to_track : ['D4', 'F4', 'G4', 'A4', 'Bb4', 'C5', 'D5', 'F5']
+
+sample_rate             : 44100
+frame_length            : 4096
+
+### rough CQT
+rough_bins_per_octave   : 36
+rough_n_filters         : 96
+
+### precise CQT
+precise_bins_per_octave : 36
+precise_n_filters       : 10
+cached_filters          : True
+
+### thresholds
+level_threshold         : 0.2
+harm_noise_threshold    : 3
+precise_threshold       : 1
+uncertainty_threshold   : 0.3
+
+### logs
+logs_folter: '/logs/'
+
+
