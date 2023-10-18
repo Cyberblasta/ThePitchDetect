@@ -2,8 +2,11 @@
 
 import onnxruntime
 from .config import config
+from pathlib import Path
 
-model_path = config.model_path
+folder = Path('pitchdetector/models/')
+
+model_path = folder / config.model_path
 
 session = onnxruntime.InferenceSession(model_path, providers=['CPUExecutionProvider'])
 
