@@ -7,6 +7,8 @@ import numpy as np
 
 import threading
 
+from collections import deque
+
 pa = pyaudio.PyAudio()
 
 class AudioBuffer():
@@ -20,7 +22,7 @@ class AudioBuffer():
             #input_device_index=18,
             stream_callback=self.callback)
         
-        self.audio_buffer = []
+        self.audio_buffer = deque(maxlen=646)
         self.new_frames_count = 0
         self.lock = threading.Lock()
 
@@ -55,4 +57,4 @@ class AudioCaller:
         
         self.widget.frequency_detected.emit(audio)#result)
 
-        self.audio_buffer.audio_buffer = []
+        #self.audio_buffer.audio_buffer = []

@@ -52,9 +52,9 @@ class GUI(QWidget):
 
         self.history = []
         
-        button = QPushButton('Log', parent=self)
-        button.setGeometry(self.width() - 10 - 40, 10, 40, 25)
-        button.clicked.connect(self.save_log)
+        # button = QPushButton('Log', parent=self)
+        # button.setGeometry(self.width() - 10 - 40, 10, 40, 25)
+        # button.clicked.connect(self.save_log)
 
         p = self.palette()
         p.setColor(QPalette.Window, QColor(28, 38, 35))
@@ -191,11 +191,7 @@ class GUI(QWidget):
 
             #self.update()
 
-    def save_log(self):
-        now = datetime.datetime.now()
-        date_time = now.strftime("%d%H%M%S")
-        with open(f'{config.log_folder}log_{date_time}.log', 'bw') as f:
-            pickle.dump(self.history, f)
+
 
 
 # import onnxruntime
