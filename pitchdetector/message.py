@@ -61,11 +61,12 @@ class Messages:
         return self
     
     def numpyfy(self):
+        self.denone_probs()
         for attr in self.__dict__.keys():
             if attr not in self.cathegorical:
                 setattr(self, attr, np.array(getattr(self, attr)))
-        self.denone_probs()
-        self.probs = np.stack(self.probs)
+
+        
         return self
     
     def denone_probs(self):
@@ -73,10 +74,11 @@ class Messages:
         for p in self.probs:
             if len(p) != 1:
                 size = len(p)
-                dtype = p.dtype
+                #dtype = p.dtype
         for n, p in enumerate(self.probs):
             if len(p) == 1:
-                self.probs[n] = np.zeros(size, dtype = dtype)
+                self.probs[n] = np.zeros(size)
+        self.probs = np.stack(self.probs)
         
 
 #%%

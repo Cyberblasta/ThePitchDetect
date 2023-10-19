@@ -7,7 +7,11 @@ import numpy as np
 
 import threading
 
+from .config import config
+
 from collections import deque
+
+from math import ceil
 
 pa = pyaudio.PyAudio()
 
@@ -42,7 +46,7 @@ class AudioCaller:
         self.audio_buffer = AudioBuffer()
         self.timer = QTimer()
         self.timer.timeout.connect(self.detect_frequency)
-        self.timer.start(50)
+        self.timer.start(int(1000 * config.frame_length / config.sample_rate))
         self.widget = widget
         self.refresh = True
 
@@ -57,4 +61,4 @@ class AudioCaller:
         
         self.widget.frequency_detected.emit(audio)#result)
 
-        #self.audio_buffer.audio_buffer = []
+        self.audio_buffer.audio_buffer = []

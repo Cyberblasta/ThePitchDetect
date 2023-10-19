@@ -23,6 +23,6 @@ precise_threshold       : 1
 uncertainty_threshold   : 0.3
 
 ### logs
-logs_folter: '/logs/'
+log_folder: 'logs/'
 
 

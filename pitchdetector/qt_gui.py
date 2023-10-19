@@ -10,7 +10,9 @@ from .analyzer import Analyzer
 
 from .config import config
 from .utils.ema import EMA
+from .utils.save_mp3 import save_numpy_to_mp3
 
+from collections import deque
 
 import pickle
 import datetime
@@ -50,7 +52,8 @@ class GUI(QWidget):
         self.volume = EMA(c = 0.95)
         self.frequency_detected.connect(self.handle_frequency_detected)
 
-        self.history = []
+        self.history = deque(maxlen=100)
+        self.audio_queue = deque(maxlen=100)
         
         # button = QPushButton('Log', parent=self)
         # button.setGeometry(self.width() - 10 - 40, 10, 40, 25)
@@ -65,10 +68,12 @@ class GUI(QWidget):
         timer.timeout.connect(self.update_gui)
         timer.start()
 
+        button = QPushButton('Log', parent=self)
+        button.setGeometry(self.width() - 10 - 40, 10, 40, 25)
+        button.clicked.connect(self.save_log)
+
     def update_gui(self):
         self.update()
-
-        #self.show()
 
     def paintEvent(self, event):
 
@@ -165,9 +170,14 @@ class GUI(QWidget):
         
         painter.end()
 
-    def handle_frequency_detected(self, input):
-        input = self.analyser.analyse(input)
+    def handle_frequency_detected(self, audio):
+
+        self.audio_queue.append(audio)
+        
+        input = self.analyser.analyse(audio)
+        
         self.history.append(input)
+        
         if input.freqs[0] != 0 or input.freqs[1] != 0:
             
             f1, f2 = input.freqs
@@ -189,6 +199,16 @@ class GUI(QWidget):
             
             self.notes = new_notes
 
+    def save_log(self):
+        
+        now = datetime.datetime.now()
+        date_time = now.strftime("%d%H%M%S")
+
+        with open(f'{config.log_folder}log_{date_time}.log', 'bw') as f:
+            pickle.dump(self.history, f)
+        
+        audio = np.stack(self.audio_queue)
+        save_numpy_to_mp3(audio, f'{config.log_folder}{date_time}.mp3')
             #self.update()
 
 
